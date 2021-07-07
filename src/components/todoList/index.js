@@ -25,8 +25,9 @@ function index({ todoList, addTodo }) {
   );
 }
 const mapStateToProps = (state) => {
+  console.log('update todo', state);
   return {
-    todoList: state.todo.todoList,
+    todoList: state.todo,
   };
 };
 const mapDispatchToProps = (dispatch) => {
