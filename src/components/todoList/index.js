@@ -2,6 +2,7 @@ import { Button } from 'react-bootstrap';
 import React from 'react';
 import { connect } from 'react-redux';
 import { addTodo } from '../../redux/todo/todo.action';
+import TodoItem from './todo-item';
 
 function index({ todoList, addTodo }) {
   console.log(todoList);
@@ -18,9 +19,12 @@ function index({ todoList, addTodo }) {
   return (
     <div>
       <Button onClick={addTodoClick}>Add todo</Button>
-      {todoList.map((x, i) => {
-        return <span key={i}>{x.text}</span>;
-      })}
+
+      <div className="list-group">
+        {todoList.map((x, i) => {
+          return <TodoItem todo={x} key={i}></TodoItem>;
+        })}
+      </div>
     </div>
   );
 }
