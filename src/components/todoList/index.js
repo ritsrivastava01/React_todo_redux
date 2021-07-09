@@ -1,23 +1,29 @@
 import { Button } from 'react-bootstrap';
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { addTodo } from '../../redux/todo/todo.action';
 import TodoItem from './todo-item';
+import CreateNewTodo from './create-new-todo';
 
 function index({ todoList, addTodo }) {
-  console.log(todoList);
+  const [popOver, setPopOver] = useState(false);
 
   const addTodoClick = () => {
-    const newTodo = {
-      text: 'todo 2',
-      type: 'family',
-      deleted: false,
-      completed: false,
-    };
-    addTodo(newTodo);
+    setPopOver(true);
+    // const newTodo = {
+    //   text: 'todo 2',
+    //   type: 'family',
+    //   deleted: false,
+    //   completed: false,
+    // };
+    // addTodo(newTodo);
+    console.log('index.js', popOver);
+  };
+  const addTodoClickHandler = () => {
+    console.log('aaya');
   };
   return (
-    <div>
+    <>
       <Button onClick={addTodoClick}>Add todo</Button>
 
       <div className="list-group">
@@ -25,7 +31,11 @@ function index({ todoList, addTodo }) {
           return <TodoItem todo={x} key={i}></TodoItem>;
         })}
       </div>
-    </div>
+      <CreateNewTodo
+        showPopover={popOver}
+        addTodoClick={addTodoClickHandler}
+      ></CreateNewTodo>
+    </>
   );
 }
 const mapStateToProps = (state) => {
