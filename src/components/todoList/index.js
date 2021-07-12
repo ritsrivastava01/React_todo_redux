@@ -1,39 +1,56 @@
 import { Button } from 'react-bootstrap';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { addTodo } from '../../redux/todo/todo.action';
+import {
+  addTodo,
+  deleteTodo,
+  completeTodo,
+} from '../../redux/todo/todo.action';
 import TodoItem from './todo-item';
 import CreateNewTodo from './create-new-todo';
 
-function index({ todoList, addTodo }) {
-  const [popOver, setPopOver] = useState(false);
+function index({ todoList, addTodo, completeTodo, deleteTodo }) {
+  const [popOver, setPopOver] = useState();
 
   const addTodoClick = () => {
     setPopOver(true);
-    // const newTodo = {
-    //   text: 'todo 2',
-    //   type: 'family',
-    //   deleted: false,
-    //   completed: false,
-    // };
-    // addTodo(newTodo);
     console.log('index.js', popOver);
   };
-  const addTodoClickHandler = () => {
-    console.log('aaya');
+  const saveTodoClickHandler = (todo) => {
+    addTodo(todo);
+    setPopOver(false);
   };
+  const closeClickHandler = () => {
+    setPopOver(false);
+  };
+  const completeTodoHandler = (index) => {
+    completeTodo(index);
+  };
+
+  const deleteTodoHandler = (index) => {
+    deleteTodo(index);
+  };
+
   return (
     <>
       <Button onClick={addTodoClick}>Add todo</Button>
 
       <div className="list-group">
         {todoList.map((x, i) => {
-          return <TodoItem todo={x} key={i}></TodoItem>;
+          return (
+            <TodoItem
+              todo={x}
+              key={i}
+              completeTodo={() => completeTodoHandler(i)}
+              deleteTodo={() => deleteTodoHandler(i)}
+            ></TodoItem>
+          );
         })}
       </div>
       <CreateNewTodo
         showPopover={popOver}
-        addTodoClick={addTodoClickHandler}
+        saveTodoClick={saveTodoClickHandler}
+        closeClick={closeClickHandler}
       ></CreateNewTodo>
     </>
   );
@@ -47,6 +64,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addTodo: (todo) => dispatch(addTodo(todo)),
+    deleteTodo: (index) => dispatch(deleteTodo(index)),
+    completeTodo: (index) => dispatch(completeTodo(index)),
   };
 };
 
